@@ -5,19 +5,19 @@ public class Product {
 	private double gram;
 	private String info;
 	private double pricePerKilo;
-	private double productCost;
+	private boolean hidden;
 
 	public Product(String nome, Double gram) {
 		this.name = nome;
 		this.gram = gram;
 	}
 
-	public Product(String name) {
-		this.name = name;
+	public double getPrice() {
+		return this.gram * this.pricePerKilo / 1000;
 	}
 
-	public Double getQuantity() {
-		return this.gram;
+	public Product(String name) {
+		this.name = name;
 	}
 
 	public void setGram(Double gram) {
@@ -54,14 +54,6 @@ public class Product {
 
 	public void setPricePerKilo(double pricePerKilo) {
 		this.pricePerKilo = pricePerKilo;
-	}
-
-	public double getProductCost() {
-		return productCost;
-	}
-
-	public void setProductCost(double productCost) {
-		this.productCost = productCost;
 	}
 
 }
