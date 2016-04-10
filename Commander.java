@@ -1,5 +1,9 @@
 package main;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,6 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
 
 public class Commander {
 	private List<Pizza> pizzas;
@@ -34,7 +43,7 @@ public class Commander {
 
 	public List<Pizza> renameAllProductWithSameName(String oldName, String newName) {
 		/** Return all the pizzas that are changed by name **/
-		List<Pizza> result = checkPizzasToChange(oldName);
+		List<Pizza> result = getPizzasFromNameProduct(oldName);
 		for (Pizza pizza : this.pizzas) {
 			for (Product p : pizza.getProducts()) {
 				if (p.getName().equals(oldName)) {
@@ -45,7 +54,8 @@ public class Commander {
 		return result;
 	}
 
-	private List<Pizza> checkPizzasToChange(String oldName) {
+	private List<Pizza> getPizzasFromNameProduct(String oldName) {
+		/** Return all the pizzas that contains the argument 'oldName' **/
 		List<Pizza> result = new ArrayList<Pizza>();
 		for (Pizza pizza : this.pizzas) {
 			for (Product p : pizza.getProducts()) {
@@ -75,13 +85,13 @@ public class Commander {
 		return null;
 	}
 
-	public Pizza deleteProductToPizza(Pizza pizza, Product product) {
-		return pizza.deleteProduct(product);
+	public Component deleteProductToComponent(Component component, Product product) {
+		return component.deleteProduct(product);
 
 	}
 
-	public Pizza addProductToPizza(Pizza pizza, Product product) {
-		return pizza.addProduct(product);
+	public Component addProductToPizza(Component component, Product product) {
+		return component.addProduct(product);
 	}
 
 	public Set<Product> getProducts() {
@@ -126,14 +136,42 @@ public class Commander {
 	public List<Pizza> getPizzas() {
 		return this.pizzas;
 	}
-	
-	public Map<Product,List<Pizza>> product2Pizza(){
+
+	public Map<Product, List<Pizza>> product2Pizza() {
 		Set<Product> products = getProductsNotDuplicated();
-		Map<Product,List<Pizza>> result = new HashMap<Product,List<Pizza>>();
-		for (Product p : products){
-			result.put(p, checkPizzasToChange(p.getName()));
+		Map<Product, List<Pizza>> result = new HashMap<Product, List<Pizza>>();
+		for (Product p : products) {
+			result.put(p, getPizzasFromNameProduct(p.getName()));
 		}
 		return result;
 	}
 
+	public void generateDocument() {
+		List<Pizza> lp = pizzas;
+		XWPFDocument doc = new XWPFDocument();
+		XWPFParagraph paragrafo = doc.createParagraph();
+		XWPFRun run = paragrafo.createRun();
+		for (Pizza pizza : lp) {
+			// run.setBold(true);
+			// run.setTextPosition(1);
+			run.setText(pizza.getName() + "\n");
+			run.setText("\n");
+			// run.setBold(false);
+			for (Product product : pizza.getProducts()) {
+				if (!product.isHidden()) {
+					run.setText(product.getName() + " \t\t " + product.getGram() + " \n");
+				}
+			}
+			run.setText("Profit: " + pizza.getProfit() + "\n");
+			run.setText("Costo: " + pizza.getPrice() + "\n");
+			run.setFontSize(30);
+			try {
+				doc.write(new FileOutputStream(new File(pizza.getName() + ".docx")));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

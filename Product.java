@@ -56,4 +56,12 @@ public class Product {
 		this.pricePerKilo = pricePerKilo;
 	}
 
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+
 }
