@@ -1,4 +1,4 @@
-package test;
+package main;
 
 import static org.junit.Assert.assertEquals;
 
@@ -132,7 +132,7 @@ public class TestCommander {
 		m.addProductToPizza(p1, temp);
 		assertEquals(5, p1.getProducts().size());
 
-		m.deleteProductToPizza(p1, temp);
+		m.deleteProductToComponent(p1, temp);
 		assertEquals(4, p1.getProducts().size());
 
 	}
