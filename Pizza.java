@@ -8,28 +8,39 @@ public class Pizza extends Component {
 
 	public Pizza(String pizzaName, List<Product> products) {
 		super(pizzaName, products);
-//		if (pizzaName.equals("Meat")) {
-//			this.isMeat = true;
-//			this.isVegetarian = false;
-//		} else if (pizzaName.equals("Vegetarian")) {
-//			this.isVegetarian = true;
-//			this.isMeat = false;
-//		} else {
-//			this.isVegetarian = false;
-//			this.isMeat = false;
-//		}
-//		if (checkIfIsWithoutTomatoSauce(products)) {
-//			this.name = this.name + " (NO TOMATO)";
+		initMeatOrVeg(pizzaName, products);
+//		if (!products.contains("Tomato Sauce")) {
+//			setName(pizzaName + " NO TOMATO");
 //		}
 	}
-	
-	private boolean checkIfIsWithoutTomatoSauce(List<Product> products) {
-		for (Product p : products) {
-			if (p.getName().equals("Tomato Sauce"))
-				return false;
 
+	private void initMeatOrVeg(String pizzaName, List<Product> products) {
+		if (pizzaName.contains("Meat") || pizzaName.contains("M")) {
+			setMeat(true);
+			setVegetarian(false);
+		} else if (pizzaName.contains("Vegetarian") || pizzaName.contains("Veg") || pizzaName.contains("V")) {
+			setVegetarian(true);
+			setMeat(false);
+		} else {
+			setVegetarian(false);
+			setMeat(false);
 		}
-		return true;
+	}
+	
+	public boolean isVegetarian() {
+		return this.isVegetarian;
+	}
+
+	public void setVegetarian(boolean isVegetarian) {
+		this.isVegetarian = isVegetarian;
+	}
+
+	public boolean isMeat() {
+		return this.isMeat;
+	}
+
+	public void setMeat(boolean isMeat) {
+		this.isMeat = isMeat;
 	}
 	
 }

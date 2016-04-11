@@ -15,7 +15,6 @@ import java.util.TreeSet;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
 
 public class Commander {
 	private List<Pizza> pizzas;
@@ -148,10 +147,13 @@ public class Commander {
 
 	public void generateDocument() {
 		List<Pizza> lp = pizzas;
-		XWPFDocument doc = new XWPFDocument();
-		XWPFParagraph paragrafo = doc.createParagraph();
-		XWPFRun run = paragrafo.createRun();
+		XWPFDocument doc;
+		XWPFParagraph paragrafo;
+		XWPFRun run;
 		for (Pizza pizza : lp) {
+			doc = new XWPFDocument();
+			paragrafo = doc.createParagraph();
+			run = paragrafo.createRun();
 			// run.setBold(true);
 			// run.setTextPosition(1);
 			run.setText(pizza.getName() + "\n");
